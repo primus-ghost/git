@@ -1,2 +1,1 @@
-# git
-just for mehran
+this is my fits program in my life :-)
