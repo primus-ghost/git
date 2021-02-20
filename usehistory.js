@@ -24,3 +24,6 @@
       clearInterval(interval);
     };
   }, []);
+
+
+// react router transition animation
