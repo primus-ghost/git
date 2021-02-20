@@ -4,5 +4,8 @@
 
 tow regular expression for number and text
 
-const regNumber = /^[0-9\b]+$/;
+const regNumber = /^[0-9\b]+$/
+
+const  regPersian = /^[\u0600-\u06FF\s]+$/
+
 const regtext = /^[A-Za-z]+$/;
