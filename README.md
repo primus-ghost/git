@@ -9,3 +9,6 @@ const regNumber = /^[0-9\b]+$/
 const  regPersian = /^[\u0600-\u06FF\s]+$/
 
 const regtext = /^[A-Za-z]+$/;
+
+pure prelodar
+https://codepen.io/victor-gomez-rodriguez/pen/JjXygEx
