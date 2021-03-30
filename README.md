@@ -10,5 +10,5 @@ const  regPersian = /^[\u0600-\u06FF\s]+$/
 
 const regtext = /^[A-Za-z]+$/;
 
-pure prelodar
+pure preloadar
 https://codepen.io/victor-gomez-rodriguez/pen/JjXygEx
