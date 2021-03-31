@@ -31,3 +31,26 @@ const LoadingComponent = (props) => {
 
 export default LoadingComponent;
 
+// ///////////////////////////////////////////////////////////////////////////////////////////
+
+// export const loading = (isloading) => {
+//     return dispatch => {
+//         // const {data} = await getAllSubjectTree(token);
+//         dispatch({ type: "SET_LOADING", payload: isloading })
+//     }
+// };
+
+// const loadingReducer = (state = false, action) => {
+//     switch (action.type) {
+//         case 'SET_LOADING':
+//             console.log('...is loading')
+//             return action.payload
+
+//         default:
+//             return state
+//     }
+// }
+
+// export { loadingReducer }
+
+
