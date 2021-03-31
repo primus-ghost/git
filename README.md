@@ -12,3 +12,6 @@ const regtext = /^[A-Za-z]+$/;
 
 pure preloadar
 https://codepen.io/victor-gomez-rodriguez/pen/JjXygEx
+
+usefull web https://www.freecodecamp.org/
+
