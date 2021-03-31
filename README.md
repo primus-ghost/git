@@ -2,7 +2,7 @@
 
 
 
-tow regular expression for number and text
+some regular expressions for number and text
 
 const regNumber = /^[0-9\b]+$/
 
