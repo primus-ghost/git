@@ -385,3 +385,255 @@ function TreeBudgetingTable() {
 }
 
 export default TreeBudgetingTable;
+
+/////////////////////////////////////////////////////////////////////////////////
+import { isEmpty } from "lodash";
+import React, { useState } from "react";
+import { useContext } from "react";
+import { useEffect } from "react";
+import {
+  Accordion,
+  AccordionContext,
+  Button,
+  Card,
+  Col,
+  OverlayTrigger,
+  Row,
+  Tooltip,
+  useAccordionToggle,
+} from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { loading } from "../../../actions/loading";
+import {
+  parentIdTreeBudgetingAction,
+  parentIdUpdateTreeBudgetingAction,
+} from "../../../actions/TreeBudgetingAction";
+import {
+  deleteTreeBudgeting,
+  getAllTreeBudgetingParent,
+  getOneTreeBudgeting,
+} from "../../../services/TreeBudgetingServices";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import AddTreeBudgetingModal from "./AddTreeBudgetingModal";
+import DtailTreeBudgetingModal from "./DtailTreeBudgetingModal";
+import UpdateTreeBudgetingModal from "./UpdateTreeBudgetingModal";
+
+function TreeBudgetingSubject(props) {
+  const [updateId, setUpdateId] = useState(0);
+  const [state, setState] = useState([]);
+  const [cId, setId] = useState();
+  const [oneState, setOneState] = useState()
+
+  const dispatch = useDispatch();
+  const [showAdd, setShowAdd] = useState(false);
+  // show/hide modal functions
+  const handleCloseAdd = () => setShowAdd(false);
+  const handleShowAdd = () => setShowAdd(true);
+
+  const [show, setShow] = useState(false);
+  // show/hide modal functions
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const addTreeItem = async (id) => {
+    setId(id);
+    handleShowAdd();
+  };
+
+  const [showDetail, setShowDetail] = useState(false);
+  // show/hide modal functions
+  const handleCloseDetail = () => setShowDetail(false);
+  const handleShowDetail = () => setShowDetail(true);
+  const handleDetails = async (id) => {
+    setUpdateId(id);
+    handleShowDetail();
+  };
+
+  const handleUpdates = async (id) => {
+    setUpdateId(id);
+    const { data } = await getOneTreeBudgeting(id)
+    if (data.result === "success") {
+      setOneState(data)
+      handleShow();
+    }
+
+  };
+
+  function CustomToggle({ children, eventKey, id }) {
+    const currentEventKey = useContext(AccordionContext)
+    const isCurrentEventKey = currentEventKey === eventKey;
+
+    const decoratedOnClick = useAccordionToggle(eventKey, async () => {
+      
+          setState([])
+
+      dispatch(parentIdTreeBudgetingAction(id));
+      dispatch(loading(true));
+      const { data } = await getAllTreeBudgetingParent(id);
+      if (data.result === "success") {
+        setState(data.data);
+        dispatch(loading(false));
+      }
+
+    });
+
+    let classes = [
+      "bg-transparent",
+      "p-0",
+      "border-0",
+      "shadow-none",
+      isCurrentEventKey && "active-rotate"
+    ];
+    return (
+      <Button
+        className={classes.join(" ")}
+        onClick={() => {
+
+          decoratedOnClick();
+        }}
+      >
+        {children}
+      </Button>
+    );
+  }
+
+  function upState(data) {
+    setState([...state, ...data.data]);
+  }
+
+  function upChildState(data) {
+    let newState = [...state];
+    let i = newState.findIndex((item) => item.treeId == data.data[0].treeId);
+    newState[i] = data.data[0];
+    setState(newState);
+  }
+
+  const handleChildDelete = async (id, parentId) => {
+
+    const a = window.confirm("آیا میخواهید این گزینه پاک شود ؟");
+    if (a == true) {
+      const { data } = await deleteTreeBudgeting(id);
+      if (data.result === "success") {
+        toast.success("با موفقیت حذف شد");
+        const { data } = await getAllTreeBudgetingParent(parentId);
+        if (data.result === "success") {
+          setState(data.data);
+        } else {
+          toast.error(`${data.faultMessage}`);
+        }
+      }
+    }
+    console.log(id);
+  };
+
+  return (
+    <div>
+      <Accordion>
+        {!isEmpty(props.childState) &&
+          props.childState.map((item) => (
+            <Card key={item.treeId}>
+              <Card.Header>
+                <Row>
+                  <Col md={6}>
+                    <CustomToggle id={item.treeId} eventKey={item.treeId}>
+                      {/* <i className="fa fa-caret-left detail-btn"></i> */}
+                      <ArrowBackIosIcon color="action"  style={{fontSize:16}}/>
+                    </CustomToggle>
+
+                    <span className="mx-2"></span>
+                    {item.title}
+                  </Col>
+                  <Col md={6} className="text-right">
+                    <OverlayTrigger
+                      key="top"
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-top">افزودن</Tooltip>}
+                    >
+                      <i
+                        className="fa fa-plus detail-btn"
+                        onClick={() => addTreeItem(item.treeId)}
+                      ></i>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      key="top"
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-top">جزئیات</Tooltip>}
+                    >
+                      <i
+                        onClick={() => handleDetails(item.treeId)}
+                        className="fa fa-info detail-btn"
+                      ></i>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      key="top"
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-top">ویرایش</Tooltip>}
+                    >
+                      <i
+                        className="fa fa-edit edit-btn"
+                        onClick={(id) => {
+                          handleUpdates(item.treeId);
+                          dispatch(
+                            parentIdUpdateTreeBudgetingAction(props.parentId)
+                          );
+                        }}
+                      ></i>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger
+                      key="top"
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-top">حذف</Tooltip>}
+                    >
+                      <i
+                        onClick={(id) => {
+                          props.delete(item.treeId, props.parentId);
+                          // handleDelete(item.treeId)
+                          // dispatch(parentIdTreeBudgetingAction(item.treeId))
+                        }}
+                        className="fa fa-trash delete-btn"
+                      ></i>
+                    </OverlayTrigger>
+                  </Col>
+                </Row>
+              </Card.Header>
+              <Accordion.Collapse eventKey={item.treeId}>
+                <Card.Body>
+                  <Card.Header>
+                    <TreeBudgetingSubject
+                      parentId={item.treeId}
+                      delete={(id, parentId) => handleChildDelete(id, parentId)}
+                      newState={(data) => upChildState(data)}
+                      childState={state}
+                      key={item.treeId}
+                      id={item.treeId}
+                    />
+                  </Card.Header>
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          ))}
+      </Accordion>
+      <DtailTreeBudgetingModal
+        close={handleCloseDetail}
+        show={showDetail}
+        id={updateId}
+      />
+      <AddTreeBudgetingModal
+        close={handleCloseAdd}
+        show={showAdd}
+        id={cId}
+        updateState={(data) => upState(data)}
+      />
+      <UpdateTreeBudgetingModal
+        close={handleClose}
+        show={show}
+        id={updateId}
+        updateState={(data) => props.newState(data)}
+        oneState={oneState}
+      />
+    </div>
+  );
+}
+
+export default TreeBudgetingSubject;
