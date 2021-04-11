@@ -28,3 +28,12 @@
 
 // react router transition animation
 // https://codepen.io/sabarin/pen/yLBEPdz
+
+
+
+useEffect(() => {
+    dispatch(loading(true))
+    let x = dispatch(getAllPersonPaginationAction(0, token));
+    x.then(() => dispatch(loading(false)))
+    dispatch(PersonPaginateAction(0))
+}, []);
