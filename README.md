@@ -17,3 +17,6 @@ usefull web https://www.freecodecamp.org/
 
 holly shit https://codepen.io/jackrugile/pen/ZYMJpd?editors=1010
 
+
+simple calculator https://github.com/primus-ghost/git
+
