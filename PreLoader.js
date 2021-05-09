@@ -53,4 +53,21 @@ export default LoadingComponent;
 
 // export { loadingReducer }
 
-
+if (input.title.length == 0 && input.code.length == 0) {
+      let divv = document.createElement("div");
+      divv.innerHTML =
+        "<div id='error'><p class='login-form-error'> پر کردن یکی از فیلدها الزامی است </p></div>";
+      document.getElementById("title-search").appendChild(divv);
+    } else if (input.title.length == 0 && input.code.length > 0) {
+      const { data } = await ElementUnitPersonSearchResult(input, token);
+      document.getElementById("error")?.remove();
+      if (data.result == "success") {
+        await dispatch(ElementUnitPersonSearchResultAction(data));
+      }
+    } else if (input.title.length > 2) {
+      const { data } = await ElementUnitPersonSearchResult(input, token);
+      document.getElementById("error")?.remove();
+      if (data.result == "success") {
+        await dispatch(ElementUnitPersonSearchResultAction(data));
+      }
+    }
