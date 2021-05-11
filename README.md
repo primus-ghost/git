@@ -20,3 +20,4 @@ holly shit https://codepen.io/jackrugile/pen/ZYMJpd?editors=1010
 
 simple calculator https://github.com/primus-ghost/git
 
+beuti full calc https://codepen.io/etin-osa/pen/YzZPQQo?editors=1010
