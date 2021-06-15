@@ -23,3 +23,7 @@ simple calculator https://github.com/primus-ghost/git
 beuti full calc https://codepen.io/etin-osa/pen/YzZPQQo?editors=1010
 
 iran react community: https://virgool.io/iran-react-community
+
+
+good tutorial for Recursive function in javascript
+https://jrsinclair.com/articles/2019/functional-js-traversing-trees-with-recursive-reduce/
