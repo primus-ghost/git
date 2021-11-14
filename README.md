@@ -31,3 +31,7 @@ https://jrsinclair.com/articles/2019/functional-js-traversing-trees-with-recursi
 
 read this book (fa)
 http://eloquentjs.ir/
+
+
+2048 
+https://codepen.io/ramenhog/pen/JWZzry?editors=0010
