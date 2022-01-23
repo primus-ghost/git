@@ -15,6 +15,11 @@ function initGame() {
         return num
     }
 
+    function randomValue() {
+        let val = Math.floor(Math.random() * 100);
+        return val > 85 ? 4 : 2;   
+    }
+
     function generateId() {
         let nId = id += nextId;
         return nId;
@@ -44,12 +49,13 @@ function initGame() {
         if (game[i] == null) {
             tile = {
                 id: generateId(),
-                value: 2,
+                value: randomValue(),
                 px: 0,
                 py: 0
             }
             game[i] = tile;
             tilePostion(game)
+            addTile(game[i]);
         } else createTile();
     }
 
@@ -60,8 +66,6 @@ function initGame() {
                 let y = Math.floor(i / size);
                 game[i].px = x;
                 game[i].py = y;
-                // console.log(`x is =${x} ----- y is =${y}`);
-                addTile(game[i]);
             }
         }
     }
@@ -70,25 +74,67 @@ function initGame() {
         let tileElement = document.createElement("div");
         tileElement.className = "tile";
 
-        tileElement.style.width = `${gameWidth / size - 5}px`;
-        tileElement.style.height = `${gameWidth / size - 5}px`;
+        tileElement.style.width = `${gameWidth / size}px`;
+        tileElement.style.height = `${gameWidth / size}px`;
 
-        tileElement.style.left = `${tile.px * tileSize + 2.5}px`;
-        tileElement.style.top = `${tile.py * tileSize + 2.5}px`;
+        tileElement.style.left = `${tile.px * tileSize}px`;
+        tileElement.style.top = `${tile.py * tileSize}px`;
 
         tileElement.innerHTML = tile.value;
         setTimeout(() => {
             tileElement.style.animationName = "createTile";
             tileElement.style.animationDuration = '0.3s';
             gameBorad.appendChild(tileElement);
-        }, 300);
+        }, 100);
+    }
+
+    function removeTile() {
+
+    }
+
+    function moveToRight() {
+        let fakeState = [...game];
+        for (let i = 0; i < game.length; i++) {
+            if (i % size == 0) {
+                let allRows = fakeState.slice(i, i + size);
+                mergeRow(allRows)
+            }
+        }
+    }
+
+    function moveToLeft() {
+
+    }
+
+    function mergeRow(rows) {
+        console.log(rows);
+        
+    }
+
+    function mergeColumn() {
+
+    }
+
+    function handleKey(e) {
+        const { keyCode } = e;
+        switch (keyCode) {
+            case 37:
+                moveToLeft();
+                break;
+            case 39:
+                moveToRight();
+                break;
+            default:
+                return null;
+        }
     }
 
     clickBoard[0].addEventListener('click', (e) => {
         createTile();
-        console.log(game);
-
     })
+    document.addEventListener('keyup', handleKey)
+
+    createTile();
 }
 
 
