@@ -17,7 +17,7 @@ function initGame() {
 
     function randomValue() {
         let val = Math.floor(Math.random() * 100);
-        return val > 85 ? 4 : 2;   
+        return val > 85 ? 4 : 2;
     }
 
     function generateId() {
@@ -72,7 +72,7 @@ function initGame() {
 
     function addTile(tile) {
         let tileElement = document.createElement("div");
-        tileElement.className = "tile";
+        tileElement.className = `tile tile_${tile.id}`;
 
         tileElement.style.width = `${gameWidth / size}px`;
         tileElement.style.height = `${gameWidth / size}px`;
@@ -90,14 +90,17 @@ function initGame() {
 
     function removeTile() {
 
-    }
+    };
 
     function moveToRight() {
-        let fakeState = [...game];
+        let array = [];
         for (let i = 0; i < game.length; i++) {
             if (i % size == 0) {
-                let allRows = fakeState.slice(i, i + size);
-                mergeRow(allRows)
+                let allRows = game.slice(i, i + size);
+                let filterd = allRows.filter(item => item);
+                let arr = new Array(allRows.length - filterd.length).fill(null);
+                arr.push(...filterd);
+                array = [...array,...arr];
             }
         }
     }
@@ -107,8 +110,7 @@ function initGame() {
     }
 
     function mergeRow(rows) {
-        console.log(rows);
-        
+
     }
 
     function mergeColumn() {
@@ -132,12 +134,9 @@ function initGame() {
     clickBoard[0].addEventListener('click', (e) => {
         createTile();
     })
-    document.addEventListener('keyup', handleKey)
-
+    document.addEventListener('keyup', handleKey);
     createTile();
 }
-
-
 
 window.onload = function () {
     initGame();
