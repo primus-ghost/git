@@ -70,16 +70,23 @@ function initGame() {
         }
     }
 
+    function updateTilePosition(arr) {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i]) {
+                let tile = document.getElementsByClassName(`tile_${arr[i].id}`);
+                tile[0].style.left = `${arr[i].px * tileSize}px`;
+                tile[0].style.top = `${arr[i].py * tileSize}px`;
+            }
+        }
+    }
+
     function addTile(tile) {
         let tileElement = document.createElement("div");
-        tileElement.className = `tile tile_${tile.id}`;
-
+        tileElement.className = `tile tile_${tile.id} color_tile_${tile.value}`;
         tileElement.style.width = `${gameWidth / size}px`;
         tileElement.style.height = `${gameWidth / size}px`;
-
         tileElement.style.left = `${tile.px * tileSize}px`;
         tileElement.style.top = `${tile.py * tileSize}px`;
-
         tileElement.innerHTML = tile.value;
         setTimeout(() => {
             tileElement.style.animationName = "createTile";
@@ -93,24 +100,45 @@ function initGame() {
     };
 
     function moveToRight() {
-        let array = [];
+        let movedArr = [];
         for (let i = 0; i < game.length; i++) {
             if (i % size == 0) {
                 let allRows = game.slice(i, i + size);
                 let filterd = allRows.filter(item => item);
-                let arr = new Array(allRows.length - filterd.length).fill(null);
-                arr.push(...filterd);
-                array = [...array,...arr];
+                let moved = new Array(allRows.length - filterd.length).fill(null);
+                moved.push(...filterd);
+                movedArr = [...movedArr, ...moved];
             }
         }
+
+        game = movedArr;
+        tilePostion(game);
+        updateTilePosition(game);
+        createTile();
     }
 
-    function moveToLeft() {
 
+
+    function moveToLeft() {
+        let movedArr = [];
+        for (let i = 0; i < game.length; i++) {
+            if (i % size == 0) {
+                let allRows = game.slice(i, i + size);
+                let filterd = allRows.filter(item => item);
+                let moved = new Array(allRows.length - filterd.length).fill(null);
+                console.log();
+
+                moved.unshift(...filterd);
+                movedArr = [...movedArr, ...moved]
+            }
+        }
+        game = movedArr;
+        tilePostion(game);
+        updateTilePosition(game);
     }
 
     function mergeRow(rows) {
-
+        
     }
 
     function mergeColumn() {
@@ -122,6 +150,7 @@ function initGame() {
         switch (keyCode) {
             case 37:
                 moveToLeft();
+                createTile();
                 break;
             case 39:
                 moveToRight();
@@ -133,7 +162,8 @@ function initGame() {
 
     clickBoard[0].addEventListener('click', (e) => {
         createTile();
-    })
+    });
+
     document.addEventListener('keyup', handleKey);
     createTile();
 }
