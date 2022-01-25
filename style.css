@@ -17,27 +17,38 @@ body {
   height: 400px;
   position: relative;
   display: flex;
-  margin:  100px auto;
+  margin: 100px auto;
 }
 
 .backGround {
   position: absolute;
-  border: 1px solid lightblue;
+  border: 3px solid thistle;
   /* z-index: 10; */
   padding: 10px;
 }
 .tile {
   position: absolute;
+  transition:  .2s;
+  /* transition: top 2s; */
   font-size: 25px;
   border-radius: 10px;
-  background-image: linear-gradient(to right bottom, rgb(0, 128, 255),  rgb(0, 255, 213));
   color: whitesmoke;
   display: flex;
   justify-content: center;
-    transform: scale(.9);
-    align-items: center;
+  transform: translate(0, 0) scale(0.9);
+  align-items: center;
   /* animation: createTile 0.3s  1; */
 }
+
+.color_tile_2{
+  background-image: linear-gradient(to right bottom, rgb(0, 98, 255), rgb(204, 0, 255));
+
+}
+.color_tile_4{
+  background-image: linear-gradient(to right bottom, rgb(0, 255, 106), rgb(0, 132, 255));
+
+}
+
 
 @keyframes createTile {
   0% {
@@ -46,11 +57,11 @@ body {
   }
   50% {
     transform: scale(1);
-    opacity: .8;
+    opacity: 0.8;
   }
   100% {
     transform: scale(0.9);
     opacity: 1;
-
   }
 }
+
